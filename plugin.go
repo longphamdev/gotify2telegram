@@ -12,7 +12,6 @@ import (
 
     "github.com/gotify/plugin-api"
     "github.com/gorilla/websocket"
-    "github.com/joho/godotenv"
 )
 
 // GetGotifyPluginInfo returns gotify plugin info
