@@ -140,6 +140,7 @@ func (p *Plugin) get_websocket_msg(url string, token string) {
     p.telegram_bot_token = os.Getenv("TELEGRAM_BOT_TOKEN")
     p.debugLogger.Printf("Bot token: %v\n", p.telegram_bot_token)
     p.replytomessageid = os.Getenv("REPLY_TO_MESSAGE_ID")
+    p.debugLogger.Printf("Reply to message id: %v\n", p.replytomessageid)
 
     go p.connect_websocket()
 
