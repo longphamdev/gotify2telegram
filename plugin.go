@@ -9,9 +9,13 @@ import (
     "net/http/httputil"
     "os"
     "time"
+    // for testing only
+    // "fmt"
 
     "github.com/gotify/plugin-api"
     "github.com/gorilla/websocket"
+    // for testing only
+    // "github.com/joho/godotenv"
 )
 
 // GetGotifyPluginInfo returns gotify plugin info
@@ -78,6 +82,8 @@ func (p *Plugin) send_msg_to_telegram(msg string) {
         backup_body := bytes.NewBuffer(body.Bytes())
 
         req, err := http.NewRequest("POST", "https://api.telegram.org/bot"+ p.telegram_bot_token +"/sendMessage", body)
+        // log body value
+        p.debugLogger.Printf("%v\n", body)
         if err != nil {
             p.debugLogger.Println("Create request false")
             return
@@ -133,6 +139,7 @@ func (p *Plugin) get_websocket_msg(url string, token string) {
     p.debugLogger.Printf("chatid: %v\n", p.chatid)
     p.telegram_bot_token = os.Getenv("TELEGRAM_BOT_TOKEN")
     p.debugLogger.Printf("Bot token: %v\n", p.telegram_bot_token)
+    p.replytomessageid = os.Getenv("REPLY_TO_MESSAGE_ID")
 
     go p.connect_websocket()
 
@@ -178,35 +185,26 @@ func NewGotifyPluginInstance(ctx plugin.UserContext) plugin.Plugin {
 }
 
 func main() {
-    // panic("this should be built as go plugin")
+    panic("this should be built as go plugin")
     // For testing
-    // p := &Plugin{nil, nil, "", "", ""}
-    // p.get_websocket_msg(os.Getenv("GOTIFY_HOST"), os.Getenv("GOTIFY_CLIENT_TOKEN")) 
-    // p.send_msg_to_telegram("Hello world")
+
     // err := godotenv.Load()
     // if err != nil {
     //     log.Fatalf("Error loading .env file")
+    // 
+    // // Create a plugin instance
+    // p := &Plugin{
+    //     debugLogger: log.New(os.Stdout, "Gotify 2 Telegram Test: ", log.Lshortfile),
     // }
 
-    // chatID := os.Getenv("CHAT_ID")
-    // telegramBotToken := os.Getenv("TELEGRAM_BOT_TOKEN")
-    // replyToMessageID := os.Getenv("REPLY_TO_MESSAGE_ID")
+    // // Hardcode the values for testing (REPLACE WITH YOUR ACTUAL VALUES)
+    // p.chatid = os.Getenv("TELEGRAM_CHAT_ID")
+    // p.telegram_bot_token = os.Getenv("TELEGRAM_BOT_TOKEN")
+    // p.replytomessageid = os.Getenv("REPLY_TO_MESSAGE_ID")
 
-    // plugin := &Plugin{
-    //     ws:                nil,
-    //     msgHandler:        nil,
-    //     debugLogger:       log.New(os.Stdout, "DEBUG: ", log.LstdFlags),
-    //     chatid:            chatID,
-    //     telegram_bot_token: telegramBotToken,
-    //     gotify_host:       "asd",
-    //     replytomessageid:  replyToMessageID,
-    // }
-
-    // // Call the send_msg_to_telegram function
-    // err = plugin.send_msg_to_telegram("Test message")
-    // if err != nil {
-    //     log.Fatalf("Failed to send message: %v", err)
-    // } else {
-    //     log.Println("Message sent successfully")
-    // }
+    // fmt.Println("Chat ID: ", p.chatid)
+    // fmt.Println("Bot Token: ", p.telegram_bot_token)
+    // fmt.Println("Reply to message ID: ", p.replytomessageid)
+    // // Test sending a message
+    // p.send_msg_to_telegram("Test message from Gotify 2 Telegram plugin")
 }
