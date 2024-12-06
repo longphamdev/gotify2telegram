@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/gotify/plugin-api v1.0.0
+	github.com/joho/godotenv v1.5.1
 )
 
 require (
